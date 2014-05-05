@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <errno.h>
+#include <unistd.h>
 
 #define PORT 6000
 #define MULTICAST_GROUP "239.0.0.1"
@@ -21,7 +22,7 @@
 
 double getCurrentTimeWithMicroSeconds();
 
-int main(int argc){
+int main(int argc, char **argv){
 
 	struct sockaddr_in addr;
 	int addrlen, sock, cnt;
@@ -45,7 +46,7 @@ int main(int argc){
 	//Sender
 		addr.sin_addr.s_addr = inet_addr(MULTICAST_GROUP);
 		while (1) {
-			time_t t = time(0);
+			//time_t t = time(0);
 			sprintf(message, "%6.6f", getCurrentTimeWithMicroSeconds());
 			printf("sending: %s\n", message);
 			cnt = sendto(sock, message, sizeof(message), 0, (struct sockaddr *) &addr, addrlen);
@@ -68,7 +69,7 @@ int main(int argc){
 			exit(1);
 		}         
 		while (1) {
-			cnt = recvfrom(sock, message, sizeof(message), 0, (struct sockaddr *) &addr, &addrlen);
+			cnt = recvfrom(sock, message, sizeof(message), 0, (struct sockaddr *) &addr, (socklen_t *)&addrlen);
 			if (cnt < 0) {
 				perror("recvfrom");
 				exit(1);
