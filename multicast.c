@@ -2,8 +2,8 @@
 // Simple multiCast Time Server/Client with Microseconds
 // gcc -o timecast multicast.c
 // usage :
-// server: ./timecast
-// client: ./timecast -
+// server: ./timecast -
+// client: ./timecast 
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -27,7 +27,7 @@ int main(int argc, char **argv){
 	struct sockaddr_in addr;
 	int addrlen, sock, cnt;
 	struct ip_mreq mreq;
-	char message[50];
+	char message[500];
 
 // Socket
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
